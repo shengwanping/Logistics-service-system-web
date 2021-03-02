@@ -1,4 +1,4 @@
-# lss_web
+# online-learning-system-web
 
 ## Project setup
 ```
