@@ -4,11 +4,11 @@
         <!--    登录窗口-->
         <div class="login-interface">
 
-            <p>用户登录</p>
+            <p>管理端登录</p>
             <!--        用户名和密码框-->
             <el-input class="el-input-1"
                     placeholder="请输入用户名"
-                    v-model="user.userName"
+                    v-model="user.username"
                     prefix-icon="el-icon-user-solid"
                     clearable
             >
@@ -16,7 +16,7 @@
             <el-input class="el-input-1"
                     placeholder="请输入密码"
                     prefix-icon="el-icon-lock"
-                    v-model="user.passWord"
+                    v-model="user.password"
                     show-password
             >
             </el-input>
@@ -65,66 +65,58 @@
                 confirmSuccess:false,          /*验证成功判断*/
 
                 user:{
-                    userName: '666666',
-                    passWord: '666666'
-                },
+                    username: 'admin',
+                    password: '123456'
+                }
             }
         },
 
         methods:{
             //登录验证
             loginButton(){
-                if(this.userName!='' &&this.passWord!='' && this.slider==false){
+                if(this.user.username == ''){
+                    this.$message({  //提示
+                        type: 'warning',
+                        message: '请输入用户名！'
+                    })
+                }else if(this.user.password == ''){
+                    this.$message({  //提示
+                        type: 'warning',
+                        message: '请输入密码！'
+                    })
+                }else if(this.slider==false){
                     this.$message({  //提示
                         type: 'warning',
                         message: '请安全验证！'
                     })
                 }
+
                 //后台数据库验证
-                if(this.userName!='' &&this.passWord!='' && this.slider){
-                    let that=this //把router放到rout里面
+                if(this.user.username != '' && this.user.password != '' && this.slider){
+                    let that=this
 
                     this.fullscreenLoading = true; //Loading加载
                     setTimeout(() => {
                         this.fullscreenLoading = false;
                     }, 2000);
-
                     /*到controller查询并返回数据*/
-                    this.axios.post("/menu/list",this.user,{
-                        headers: {
-                            "Content-Type": "application/json;charset=utf-8"  //头部信息
-                        }
-                    }).then(function(res) {
-                        /*将获取的json数据格式转成树状结构*/
-                        var menuList = [],temp = {};
-                        for(let i = 0; i < res.data.length; i++){
-                            temp[res.data[i]['menuId']]=res.data[i];//第一种方法，将res.data数组转成对象类型
-                        }
-                        for(let j=0; j<res.data.length; j++){
-                            let tempVp = temp[res.data[j]["parentId"]]; //获取每一个子对象的父对象，（上面有两种方法，这里用的第一种）
-                            if(tempVp){//判断父对象是否存在，如果不存在直接将对象放到第一层
-                                if(!tempVp["children"]) tempVp["children"] = [];//如果父元素的children对象不存在，则创建children来装孩子
-                                tempVp["children"].push(res.data[j]);//将本对象压入父对象的children数组
-                            }else{
-                                menuList.push(res.data[j]);//将不存在父对象的对象直接放入一级目录
-                            }
-                        }
-                        //console.log(temp);console.log(result);
-                        /*将json转成树状结构 end*/
-                        /*跳转到主页*/
-                        if(res.data.length>0){
+                    that.axios.post("/user/login/admin",
+                        that.user
+                    ).then(function(res) {
+                        if(res.data.code == 0){
                             that.$router.push({
                                 path:'/homepage',
                                 query:{
-                                    menuList:menuList, //菜单列表
-                                    userName:that.user.userName,  //用户id
+                                    menuList:JSON.stringify(res.data.data), //菜单列表
+                                    name:res.data.data[0].name,  //用户名
+                                    user:that.user
                                 }
                             })
                         }else{
-                            this.$message.error('用户名或密码错误！');
+                            that.$message.error(res.data.msg);
                         }
                     }).catch(()=>
-                        this.$message.error('用户名或密码错误！')
+                        that.$message.error('系统错误！')
                     );
                 }
 

@@ -12,9 +12,9 @@
                     background
                     :page-size="10"
                     :pager-count="5"
-                    layout="sizes, prev, pager, next,jumper"
+                    layout="sizes, prev, pager, next, jumper"
                     :total="502"
-                    :page-sizes="[10, 20, 30, 40, 50]"
+                    :page-sizes="[5, 10, 15, 20, 25]"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     >

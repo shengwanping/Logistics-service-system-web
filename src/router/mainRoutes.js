@@ -5,20 +5,11 @@ Vue.use(Router)
 import login from "../components/login/login";
 import homepage from "../components/homepage/homepage";
 import mainPage from "../components/homepage/mainPage";
-import courseView from "../components/teacher_course/courseView";
-import addCourse from "../components/teacher_course/addCourse";
-import alterPassword from "../components/teacher_course/alterPassword";
-import courseProgress from "../components/teacher_course/courseProgress";
-import studentAdmin from "../components/admin_course/studentAdmin";
+import userInfo from "../components/user_management/userInfo";
+import userAudit from "../components/user_management/user_audit";
+import alterPassword from "../components/user_management/alterPassword";
+import news from "../components/system_management/news";
 
-import courseAudit from "../components/admin_course/course_audit";
-
-import listCourse from "../components/student_course/listCourse";
-import singleCourse from "../components/student_course/singleCourse";
-import singleCourseSub from "../components/student_course/singleCourseSub";
-import singleCourseSub2 from "../components/student_course/singleCourseSub2";
-import singleCourseSub3 from "../components/student_course/singleCourseSub3";
-import courseCheck from "../components/admin_course/course_check";
 
 
 
@@ -45,80 +36,34 @@ const router = new Router({
                         default:mainPage
                     }
                 },
-                { //教师-》课程管理
-                    path: '/homepage/courseView',
-                    name:'courseView',
+                { //用户管理-》用户信息管理
+                    path: '/user/info',
+                    name:'userInfo',
                     components:{
-                        default:courseView
+                        default:userInfo
                     }
                 },
-                { //教师-》课程管理-》增加课程
-                    path: '/homepage/addCourse',
-                    name:'addCourse',
+                { //用户管理-》用户审核
+                    path: '/user/audit',
+                    name:'userAudit',
                     components:{
-                        default:addCourse
+                        default:userAudit
                     }
                 },
-                { //教师-》学习统计-》课程学习统计
-                    path: '/homepage/courseProgress',
-                    name:'courseProgress',
-                    components:{
-                        default:courseProgress
-                    }
-                },
-                { //教师-》个人信息修改-》修改密码
-                    path: '/homepage/alterPassword',
+                { //个人中心-》修改密码
+                    path: '/user/alterPassword',
                     name:'alterPassword',
                     components:{
                         default:alterPassword
                     }
                 },
-                { //管理员-》用户管理-》学生管理
-                    path: '/homepage/studentAdmin',
-                    name:'studentAdmin',
+                { //个人中心-》新闻管理
+                    path: '/systemCenter/news',
+                    name:'news',
                     components:{
-                        default:studentAdmin
+                        default:news
                     }
-                },
-                { //管理员-》课程审核
-                    path: '/homepage/courseAudit',
-                    name:'courseAudit',
-                    components:{
-                        default:courseAudit
-                    }
-                },
-                { //管理员-》课程查看
-                    path: '/homepage/courseCheck',
-                    name:'courseCheck',
-                    components:{
-                        default:courseCheck
-                    }
-                },
-                { //学生-》课程学习
-                    path: '/homepage/listCourse',
-                    name:'listCourse',
-                    components:{
-                        default:listCourse
-                    }
-                },
-                { //学生-》课程学习-》单个课程
-                    path: '/homepage/singleCourse',
-                    name:'singleCourse',
-                    components:{
-                        default:singleCourse
-                    },
-                    children:[ //学生-》课程学习-》单个课程->视频，课件，测试页面
-                        { //主页视图
-                            path: '/homepage/singleCourse/singleCourseSub',
-                            name:'singleCourseSub',
-                            components:{
-                                a:singleCourseSub,
-                                b:singleCourseSub2,
-                                c:singleCourseSub3,
-                            }
-                        },
-                    ]
-                },
+                }
             ]
         },
         ]
